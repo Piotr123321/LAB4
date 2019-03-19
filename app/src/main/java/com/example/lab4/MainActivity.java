@@ -12,5 +12,6 @@ public class MainActivity extends AppCompatActivity {
 
         // to jest komentarz do GIT la la la la la
         // a to ciag dalszy komentarza
+        // no to teraz cos znoabczymy
     }
 }
