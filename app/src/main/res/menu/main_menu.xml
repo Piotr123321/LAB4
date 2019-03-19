@@ -7,7 +7,7 @@
         android:title="Nowy"
         android:onClick="nowyWpis"
         android:icon="@android:drawable/ic_menu_add"
-        app:showAcAction="always"
+        app:showAsAction="always"
         />
 
 </menu>
