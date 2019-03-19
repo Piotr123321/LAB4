@@ -9,5 +9,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+
+        // to jest komentarz do GIT la la la la la
+        // a to ciag dalszy komentarza
     }
 }
