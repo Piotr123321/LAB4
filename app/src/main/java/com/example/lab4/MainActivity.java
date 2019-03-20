@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
 
-        String[] values = new String[] {"Pies", "Kot", "Koń", "Gołąb", "Krók", "Dzik", "Karp",
-                "Osioł", "Chomik", "Mysz", "Jeż", "Karaluch"};
+        //String[] values = new String[] {"Pies", "Kot", "Koń", "Gołąb", "Krók", "Dzik", "Karp",
+        //        "Osioł", "Chomik", "Mysz", "Jeż", "Karaluch"};
 
-        this.target=new ArrayList<String>();        //umieszczenie elenetow z tablicy
-        this.target.addAll(Arrays.asList(values));
+        //this.target=new ArrayList<String>();        //umieszczenie elenetow z tablicy
+        //this.target.addAll(Arrays.asList(values));
 
         this.adapter=new SimpleCursorAdapter(this,android.R.layout.simple_list_item_2,
                 db.lista(),
@@ -36,6 +39,20 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.listView);
         listview.setAdapter(this.adapter);
+
+        listview.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
+
+                TextView name = (TextView) view.findViewById( android.R.id.text1);
+                Animal zwierz = db.pobierz(Integer.parseInt(name.getText().toString()));
+
+                Intent intencja = new Intent(getApplicationContext(),DodajWpis.class);
+                intencja.putExtra("element", zwierz);
+                startActivityForResult(intencja, 2);
+
+            }
+        } );
     }
 
     @Override
@@ -62,6 +79,17 @@ public class MainActivity extends AppCompatActivity {
             Animal nowy=(Animal) extras.getSerializable( "nowy" );
 
             this.db.dodaj(nowy);
+            adapter.changeCursor( db.lista() );
+            adapter.notifyDataSetChanged();
+
+        }
+
+        if(requsetCode==2 && resultCode==RESULT_OK)
+        {
+            Bundle extras = data.getExtras();
+            Animal nowy=(Animal) extras.getSerializable( "nowy" );
+
+            this.db.aktualizuj(nowy);
             adapter.changeCursor( db.lista() );
             adapter.notifyDataSetChanged();
 
